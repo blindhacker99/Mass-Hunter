@@ -6,15 +6,7 @@ import requests
 
 def read_hosts_from_csv():
 
-  """
-
-  reads the shodan cvs dump and extract host and ports
-
-  @:parameter none
-
-  :return: host lists
-
-  """
+  #This function return host_list
 
   path = '/shodan-export.csv'
 
